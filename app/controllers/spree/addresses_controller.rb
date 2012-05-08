@@ -3,7 +3,11 @@ class Spree::AddressesController < Spree::BaseController
   load_and_authorize_resource
   
   def edit
-    session["user_return_to"] = request.env['HTTP_REFERER']
+    if URI(request.env['HTTP_REFERER']).path =="/checkout/update/address"
+      session["user_return_to"] = checkout_path
+    else
+      session["user_return_to"] = request.env['HTTP_REFERER']
+    end
   end
   
   def update
@@ -13,6 +17,7 @@ class Spree::AddressesController < Spree::BaseController
       end
     else
       new_address = @address.clone
+      new_address.user = current_user
       new_address.attributes = params[:address]
       @address.update_attribute(:deleted_at, Time.now)
       if new_address.save

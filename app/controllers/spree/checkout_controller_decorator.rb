@@ -22,7 +22,7 @@ Spree::CheckoutController.class_eval do
   end
   
   def normalize_addresses
-    return unless params[:state] == "address" && @order.bill_address_id && @order.ship_address_id
+    return unless params[:state] == "address" && @order.bill_address_id && @order.ship_address_id && @order.errors.size == 0
     @order.bill_address.reload
     @order.ship_address.reload
     
