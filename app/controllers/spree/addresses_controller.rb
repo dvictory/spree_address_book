@@ -3,10 +3,14 @@ class Spree::AddressesController < Spree::BaseController
   load_and_authorize_resource
   
   def edit
-    if URI(request.env['HTTP_REFERER']).path =="/checkout/update/address"
-      session["user_return_to"] = checkout_path
-    else
-      session["user_return_to"] = request.env['HTTP_REFERER']
+    begin
+      if URI(request.env['HTTP_REFERER']).path =="/checkout/update/address"
+        session["user_return_to"] = checkout_path
+      else
+        session["user_return_to"] = request.env['HTTP_REFERER']
+      end
+    rescue
+      session["user_return_to"] = nil
     end
   end
   
