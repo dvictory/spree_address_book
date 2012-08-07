@@ -1,7 +1,8 @@
 class Spree::AddressesController < Spree::BaseController
   rescue_from ActiveRecord::RecordNotFound, :with => :render_404
   load_and_authorize_resource
-  
+  ssl_required
+
   def edit
     begin
       if URI(request.env['HTTP_REFERER']).path =="/checkout/update/address"
